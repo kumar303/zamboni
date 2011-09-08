@@ -277,6 +277,8 @@ MIDDLEWARE_CLASSES = (
     # Mobile detection should happen in Zeus.
     'mobility.middleware.DetectMobileMiddleware',
     'mobility.middleware.XMobileMiddleware',
+    # Disabled until ready:
+    # 'amo.middleware.LazyPjaxMiddleware',
     'amo.middleware.RemoveSlashMiddleware',
 
     # Munging REMOTE_ADDR must come before ThreadRequest.
@@ -675,6 +677,8 @@ MINIFY_BUNDLES = {
             'js/lib/jquery-1.5.min.js',
             'js/lib/jqmobile.js',
             'js/lib/jquery.cookie.js',
+            'js/lib/jquery.pjax.js',
+            'js/impala/pjax.js',
             'js/zamboni/browser.js',
             'js/zamboni/init.js',
             'js/zamboni/format.js',
@@ -1159,3 +1163,6 @@ WATERMARK_REUSE_SECONDS = 1800
 # by a cron. Setting this far apart from the reuse flag so that we
 # shouldn't have an overlap.
 WATERMARK_CLEANUP_SECONDS = 3600
+
+# CSS selector for what part of the response to return in an X-PJAX request
+PJAX_SELECTOR = '#page'
