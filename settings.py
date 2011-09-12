@@ -675,6 +675,8 @@ MINIFY_BUNDLES = {
             'js/lib/jquery-1.5.min.js',
             'js/lib/jqmobile.js',
             'js/lib/jquery.cookie.js',
+            'js/lib/jquery.pjax.js',
+            'js/impala/pjax.js',
             'js/zamboni/browser.js',
             'js/zamboni/init.js',
             'js/zamboni/format.js',
