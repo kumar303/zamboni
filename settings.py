@@ -1161,3 +1161,10 @@ WATERMARK_REUSE_SECONDS = 1800
 # by a cron. Setting this far apart from the reuse flag so that we
 # shouldn't have an overlap.
 WATERMARK_CLEANUP_SECONDS = 3600
+
+# When True, activate Pjax browsing on the mobile pages.
+USE_PJAX = False
+# jQuery selector for what DOM element to replace in a Pjax request.
+PJAX_SELECTOR = '#content'
+# Name of the template block to extract for Pjax requests.
+PJAX_BLOCK = 'page'

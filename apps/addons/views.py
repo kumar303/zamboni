@@ -29,6 +29,7 @@ from amo.decorators import login_required
 from amo.forms import AbuseForm
 from amo.utils import sorted_groupby, randslice
 from amo.helpers import absolutify
+from amo.lazypjax import render
 from amo.models import manual_order
 from amo import urlresolvers
 from amo.urlresolvers import reverse
@@ -158,8 +159,7 @@ def extension_detail(request, addon):
 
 @mobilized(extension_detail)
 def extension_detail(request, addon):
-    return jingo.render(request, 'addons/mobile/details.html',
-                        {'addon': addon})
+    return render(request, 'addons/mobile/details.html', {'addon': addon})
 
 
 def _category_personas(qs, limit):
@@ -209,7 +209,7 @@ def persona_detail(request, addon, template=None):
             'abuse_form': AbuseForm(request=request),
         })
 
-    return jingo.render(request, template, data)
+    return render(request, template, data)
 
 
 class BaseFilter(object):
@@ -357,8 +357,8 @@ def home(request):
     featured = [a for a in addons if a.id in featured]
     popular = sorted([a for a in addons if a.id in popular],
                      key=attrgetter('average_daily_users'), reverse=True)
-    return jingo.render(request, 'addons/mobile/home.html',
-                        {'featured': featured, 'popular': popular})
+    return render(request, 'addons/mobile/home.html',
+                  {'featured': featured, 'popular': popular})
 
 
 def homepage_promos(request):

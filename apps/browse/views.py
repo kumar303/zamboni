@@ -12,6 +12,7 @@ from mobility.decorators import mobile_template
 from tower import ugettext_lazy as _lazy
 
 import amo
+from amo.lazypjax import render
 import amo.models
 from amo.models import manual_order
 from amo.urlresolvers import reverse
@@ -178,10 +179,10 @@ def impala_themes(request, category=None):
         addons = addons.filter(categories__id=category.id)
 
     addons = amo.utils.paginate(request, addons, 16, count=addons.count())
-    return jingo.render(request, 'browse/impala/themes.html',
-                {'section': 'themes', 'addon_type': TYPE, 'addons': addons,
-                 'category': category, 'filter': filter, 'sorting': sorting,
-                 'search_cat': '%s,0' % TYPE, 'src': src, 'dl_src': dl_src})
+    return render(request, 'browse/impala/themes.html',
+                  {'section': 'themes', 'addon_type': TYPE, 'addons': addons,
+                   'category': category, 'filter': filter, 'sorting': sorting,
+                   'search_cat': '%s,0' % TYPE, 'src': src, 'dl_src': dl_src})
 
 
 @mobile_template('browse/{mobile/}extensions.html')
@@ -205,12 +206,12 @@ def extensions(request, category=None, template=None):
         addons = addons.filter(categories__id=category.id)
 
     addons = amo.utils.paginate(request, addons, count=addons.count())
-    return jingo.render(request, template,
-                        {'section': 'extensions', 'addon_type': TYPE,
-                         'category': category, 'addons': addons,
-                         'filter': filter, 'sorting': sorting,
-                         'sort_opts': filter.opts, 'src': src,
-                         'dl_src': dl_src, 'search_cat': '%s,0' % TYPE})
+    return render(request, template,
+                  {'section': 'extensions', 'addon_type': TYPE,
+                   'category': category, 'addons': addons,
+                   'filter': filter, 'sorting': sorting,
+                   'sort_opts': filter.opts, 'src': src,
+                   'dl_src': dl_src, 'search_cat': '%s,0' % TYPE})
 
 
 @mobile_template('browse/{mobile/}extensions.html')
@@ -238,12 +239,12 @@ def es_extensions(request, category=None, template=None):
         qs = qs.filter(category=category.id)
     addons = amo.utils.paginate(request, qs)
 
-    return jingo.render(request, template,
-                        {'section': 'extensions', 'addon_type': TYPE,
-                         'category': category, 'addons': addons,
-                         'filter': filter, 'sorting': sorting,
-                         'sort_opts': filter.opts, 'src': src,
-                         'dl_src': dl_src, 'search_cat': '%s,0' % TYPE})
+    return render(request, template,
+                  {'section': 'extensions', 'addon_type': TYPE,
+                   'category': category, 'addons': addons,
+                   'filter': filter, 'sorting': sorting,
+                   'sort_opts': filter.opts, 'src': src,
+                   'dl_src': dl_src, 'search_cat': '%s,0' % TYPE})
 
 
 class CategoryLandingFilter(BaseFilter):

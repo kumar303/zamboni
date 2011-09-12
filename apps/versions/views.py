@@ -12,6 +12,7 @@ import waffle
 
 import amo
 from amo.decorators import login_required
+from amo.lazypjax import render
 from amo.urlresolvers import reverse
 from amo.utils import urlparams, HttpResponseSendFile
 from access import acl
@@ -37,8 +38,7 @@ def version_list(request, addon, template):
     versions = amo.utils.paginate(request, qs, PER_PAGE)
     versions.object_list = list(versions.object_list)
     Version.transformer(versions.object_list)
-    return jingo.render(request, template,
-                        {'addon': addon, 'versions': versions})
+    return render(request, template, {'addon': addon, 'versions': versions})
 
 
 @addon_view

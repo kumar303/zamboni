@@ -12,6 +12,7 @@ from tower import ugettext_lazy as _lazy, ugettext as _
 
 import amo
 from amo import messages
+from amo import lazypjax
 import sharing.views
 from amo.decorators import login_required, post_required, json_view, write
 from amo.urlresolvers import reverse
@@ -109,7 +110,7 @@ def get_filter(request, base=None):
 
 def render(request, template, data={}, extra={}):
     data.update(dict(search_cat='collections'))
-    return jingo.render(request, template, data, **extra)
+    return lazypjax.render(request, template, data, **extra)
 
 
 # TODO (potch): restore this when we do mobile bandwagon

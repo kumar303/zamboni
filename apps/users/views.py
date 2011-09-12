@@ -23,6 +23,7 @@ from amo import messages
 from amo.decorators import (json_view, login_required, permission_required,
                             write, post_required)
 from amo.forms import AbuseForm
+from amo.lazypjax import render
 from amo.urlresolvers import reverse
 from amo.utils import send_mail
 from abuse.models import send_abuse_report
@@ -317,8 +318,8 @@ def login(request, modal=False, template=None):
             logout(request)
             log.warning(u'Attempt to log in with deleted account (%s)' % user)
             messages.error(request, _('Wrong email address or password!'))
-            return jingo.render(request, 'users/login.html',
-                                {'form': partial_form()})
+            return render(request, 'users/login.html',
+                          {'form': partial_form()})
 
         if user.confirmationcode:
             logout(request)
@@ -336,8 +337,8 @@ def login(request, modal=False, template=None):
             messages.error(request, _('Activation Email Sent'),  msg1)
             messages.info(request, _('Having Trouble?'), msg2,
                           title_safe=True)
-            return jingo.render(request, 'users/login.html',
-                                {'form': partial_form()})
+            return render(request, 'users/login.html',
+                          {'form': partial_form()})
 
         if (user.failed_login_attempts > settings.LOGIN_RATELIMIT_USER
             and not limited):
@@ -347,7 +348,7 @@ def login(request, modal=False, template=None):
             logout(request)
             log.info(u'Attempt to log in with too many failures (%s)' % user)
             form = forms.AuthenticationForm(request.POST, use_recaptcha=True)
-            return jingo.render(request, 'users/login.html', {'form': form})
+            return render(request, 'users/login.html', {'form': form})
 
         rememberme = request.POST.get('rememberme', None)
         if rememberme:

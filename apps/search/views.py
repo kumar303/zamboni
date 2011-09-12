@@ -15,6 +15,7 @@ import browse.views
 from addons.models import Addon, Category
 from amo.decorators import json_view
 from amo.helpers import urlparams
+from amo.lazypjax import render
 from amo.utils import MenuItem, sorted_groupby
 from versions.compare import dict_from_int, version_int
 from webapps.models import Webapp
@@ -315,7 +316,7 @@ def app_search(request, template=None):
         'categories': category_sidebar(request, query, facets),
         'tags': tag_sidebar(request, query, facets),
     }
-    return jingo.render(request, template, ctx)
+    return render(request, template, ctx)
 
 
 @mobile_template('search/es_results.html')
@@ -385,7 +386,7 @@ def es_search(request, tag_name=None, template=None):
         'versions': version_sidebar(request, query, facets),
         'tags': tag_sidebar(request, query, facets),
     }
-    return jingo.render(request, template, ctx)
+    return render(request, template, ctx)
 
 
 @mobile_template('search/{mobile/}results.html')
@@ -465,7 +466,7 @@ def search(request, tag_name=None, template=None):
     context = dict(pager=pager, query=query, tag=tag, platforms=platforms,
                    versions=versions, categories=categories, tags=tags,
                    sort_tabs=sort_tabs, sort_opts=sort_opts, sort=sort)
-    return jingo.render(request, template, context)
+    return render(request, template, context)
 
 
 class FacetLink(object):

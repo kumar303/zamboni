@@ -11,6 +11,7 @@ from mobility.decorators import mobile_template
 from amo import messages
 from amo.decorators import json_view, login_required, post_required
 from amo.helpers import absolutify
+from amo.lazypjax import render
 from amo.urlresolvers import reverse
 import amo.utils
 from access import acl
@@ -80,7 +81,7 @@ def review_list(request, addon, review_id=None, user_id=None, template=None):
         ctx['flags'] = get_flags(request, reviews.object_list)
     else:
         ctx['review_perms'] = {}
-    return jingo.render(request, template, ctx)
+    return render(request, template, ctx)
 
 
 @addon_view
@@ -269,8 +270,7 @@ def add(request, addon, template=None):
                            emails, Context(data), 'new_review')
 
             return redirect('reviews.list', addon.slug)
-    return jingo.render(request, template,
-                        dict(addon=addon, form=form))
+    return render(request, template, dict(addon=addon, form=form))
 
 
 @addon_view
