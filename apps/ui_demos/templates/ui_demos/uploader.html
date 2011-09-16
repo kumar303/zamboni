@@ -1,0 +1,39 @@
+{% extends "ui_demos/base.html" %}
+
+{% block page %}
+<h1>Uploader Demo</h1>
+
+<h2>Successful Upload</h2>
+<div id="upload-success">
+  <form>
+    Upload .txt, .webapp, or .xpi files:
+    <input id="uploader" type="file" data-upload-url="/_nowhere_"  id="upload-file-input"></input>
+    <button class="finish">Finish Upload</button>
+  </form>
+</div>
+
+{% endblock page %}
+  
+{% block js %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/lib/jquery.mockjax.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/zamboni/tests.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/zamboni/upload.js"></script>
+<script type="text/javascript">
+$(function() {  
+    z.FormData = tests.StubOb(z.FormData, {
+        send: function() {
+            console.log('z.FormData.send()');
+        }
+    });
+    $('#uploader').fileUploader({filetypes: ['txt', 'webapp', 'xpi']});
+    $.each(['upload_start', 'upload_progress', 'upload_finished', 'upload_errors'], function(i, evt) {
+        $('#uploader').bind(evt, function() {
+            console.log(evt);
+        });
+    });
+    $('#upload-success').click(function() {
+        formData.xhr.onreadystatechange();
+    });
+});
+</script>
+{% endblock %}

@@ -183,6 +183,11 @@ if 'django_qunit' in settings.INSTALLED_APPS:
         url(r'^_qunit/', include('django_qunit.urls')),
     )
 
+if settings.EXPOSE_UI_DEMOS:
+    urlpatterns += patterns('',
+        (r'^ui_demos/', include('ui_demos.urls')),
+    )
+
 if settings.TEMPLATE_DEBUG:
     # Remove leading and trailing slashes so the regex matches.
     media_url = settings.MEDIA_URL.lstrip('/').rstrip('/')

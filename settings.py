@@ -371,11 +371,15 @@ INSTALLED_APPS = (
 
     # Has to load after auth
     'django_browserid',
+
+    # For development:
+    'ui_demos',
 )
 
 # These apps will be removed from INSTALLED_APPS in a production environment.
 DEV_APPS = (
     'django_nose',
+    'ui_demos',
 )
 
 # Tests
@@ -1162,3 +1166,6 @@ WATERMARK_REUSE_SECONDS = 1800
 WATERMARK_CLEANUP_SECONDS = 3600
 
 CSRF_FAILURE_VIEW = 'amo.views.csrf_failure'
+
+# See ui_demos app
+EXPOSE_UI_DEMOS = DEBUG
