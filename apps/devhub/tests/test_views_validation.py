@@ -8,6 +8,7 @@ import tempfile
 import traceback
 
 from django.conf import settings
+from django.core.files.storage import default_storage as storage
 from django import forms
 
 import mock
@@ -663,7 +664,7 @@ class TestWebApps(amo.tests.TestCase):
 
     def tearDown(self):
         for tmp in self.tmp_files:
-            os.unlink(tmp)
+            storage.delete(tmp)
 
     def webapp(self, data=None, contents='', suffix='.webapp'):
         fp, tmp = tempfile.mkstemp(suffix=suffix)

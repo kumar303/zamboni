@@ -415,8 +415,8 @@ def resize_image(src, dst, size, remove_src=True):
         im = Image.open(fp)
         im = im.convert('RGBA')
         im = processors.scale_and_crop(im, size)
-    with storage.open(dst, 'wb') as fp:
-        im.save(fp, 'png')
+        with storage.open(dst, 'wb') as fp:
+            im.save(fp, 'png')
 
     if remove_src:
         storage.delete(src)
