@@ -232,7 +232,8 @@ class File(amo.models.OnChangeMixin, amo.models.ModelBase):
         # Apache did not like serving unicode filenames (bug 626587).
         if addon.is_webapp():
             extension = extension or '.webapp'
-            parts.append(addon.app_slug)
+            name = slugify(addon.app_slug) or 'app'
+            parts.append(name)
             parts.append(self.version.version)
         else:
             extension = extension or '.xpi'
