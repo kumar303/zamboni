@@ -5,6 +5,7 @@ from django.utils import translation
 from django.utils.functional import lazy
 
 import jinja2
+import mock
 from nose.tools import eq_
 from test_utils import ExtraAppTestCase, trans_eq
 
@@ -199,6 +200,16 @@ class TranslationTestCase(ExtraAppTestCase):
         # fr was added.
         translation.activate('fr')
         trans_eq(get_model().name, 'oui', 'fr')
+
+    @mock.patch.object(settings, 'HIDDEN_LANGUAGES', ['xxx'])
+    def test_dict_with_hidden_locale(self):
+        o = TranslatedModel.objects.get(id=1)
+        o.name = {'en-US': 'active language', 'xxx': 'hidden language',
+                  'de': 'another language'}
+        o.save()
+        ts = Translation.objects.filter(id=o.name_id)
+        eq_(sorted(ts.values_list('locale', flat=True)),
+            ['de', 'en-US', 'xxx'])
 
     def test_dict_bad_locale(self):
         m = TranslatedModel.objects.get(id=1)
