@@ -30,7 +30,7 @@ def global_settings(request):
             {'text': _('Account Settings'),
              'href': '/settings'},
             {'text': _('Change Password'),
-             'href': 'https://login.persona.org/signin'},
+             'href': 'https://%s/signin' % settings.BROWSERID_DOMAIN},
             {'text': _('Sign out'), 'href': reverse('users.logout')},
         ]
         if '/developers/' not in request.path:

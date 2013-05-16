@@ -1522,19 +1522,24 @@ GOOGLE_ANALYTICS_CREDENTIALS = {}
 #Which domain to access GA stats for. If not set, defaults to DOMAIN.
 GOOGLE_ANALYTICS_DOMAIN = None
 
-# Domain to allow cross-frame requests from for privacy policy and TOS.
+# Base domain to Persona. This is used in many places to construct URLs.
+# It's also used to allow cross-frame requests for privacy policy and TOS.
 BROWSERID_DOMAIN = 'login.persona.org'
 
+# Domain to static Persona content. This is where assets are served.
+# For example: static.login.persona.org.
+STATIC_BROWSERID_DOMAIN = 'static.%s' % BROWSERID_DOMAIN
+
 # Adjust these settings if you need to use a custom verifier.
-BROWSERID_VERIFICATION_URL = 'https://verifier.login.persona.org/verify'
-BROWSERID_JS_URL = 'https://login.persona.org/include.js'
+BROWSERID_VERIFICATION_URL = 'https://verifier.%s/verify' % BROWSERID_DOMAIN
+BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
 
 # The issuer for unverified Persona email addresses.
 # We only trust one issuer to grant us unverified emails.
 # If UNVERIFIED_ISSUER is set to None, forceIssuer will not
-# be sent to the client or the verifier.
-NATIVE_BROWSERID_DOMAIN = 'firefoxos.persona.org'
-UNVERIFIED_ISSUER = 'firefoxos.persona.org'
+# be sent to the client or the verifier service.
+NATIVE_BROWSERID_DOMAIN = BROWSERID_DOMAIN
+UNVERIFIED_ISSUER = BROWSERID_DOMAIN
 
 # This is a B2G (or other native) verifier. Adjust accordingly.
 NATIVE_BROWSERID_VERIFICATION_URL = ('https://%s/verify'

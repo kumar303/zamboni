@@ -6,6 +6,10 @@ Settings Changelog
 * Added ``ES_DEFAULT_NUM_REPLICAS``. Locally if you're running a single
   Elasticsearch node you probably want to set this to 0 (zero).
 * Added ``ES_DEFAULT_NUM_SHARDS``. Locally 3 shards is sufficient.
+* Added ``STATIC_BROWSERID_DOMAIN`` for Persona assets.
+* Changed ``NATIVE_BROWSERID_DOMAIN`` and ``UNVERIFIED_ISSUER`` to
+  ``login.persona.org``.
+
 
 2012-04-12
 ----------
