@@ -59,6 +59,7 @@
           <thead>
             <tr>
               <th>{{ _('Icon') }}</th>
+              <th>{{ _('Locale') }}</th>
               <th>{{ _('Name') }}</th>
               <th>{{ _('Price Point') }}</th>
               <th>{{ _('Product ID') }}</th>
@@ -77,7 +78,7 @@
         </p>
       </div>
       <script id="in-app-product-row-template" type="x-template">
-        {% with product=new_product %}
+        {% with product=new_product, active_lang=active_lang, lazy_attr=lazy_attr %}
           {% include "developers/payments/in-app-product-row.html" %}
         {% endwith %}
       </script>

@@ -1,3 +1,4 @@
+import json
 from cStringIO import StringIO
 
 from django import forms
@@ -112,6 +113,10 @@ class InAppProductSerializer(serializers.ModelSerializer):
 
 
 class InAppProductForm(forms.ModelForm):
+    LOCALES = [(translation.to_locale(k).replace('_', '-').lower(), v)
+               for k, v in do_dictsort(settings.LANGUAGES)]
+
+    locale = forms.TypedChoiceField(required=False, choices=LOCALES)
 
     class Meta:
         model = InAppProduct

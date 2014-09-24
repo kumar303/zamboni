@@ -380,10 +380,11 @@ def in_app_payments(request, addon_id, addon, webapp=True, account=None):
 @dev_required(webapp=True)
 @require_in_app_payments
 def in_app_products(request, addon_id, addon, webapp=True, account=None):
+    active_lang = request.LANG.lower()
     owner = acl.check_addon_ownership(request, addon)
     products = addon.inappproduct_set.all()
     new_product = InAppProduct(webapp=addon)
-    form = InAppProductForm()
+    form = InAppProductForm(initial={'locale': active_lang})
     list_url = None
     detail_url = None
     if addon.origin:
@@ -397,7 +398,7 @@ def in_app_products(request, addon_id, addon, webapp=True, account=None):
                   {'addon': addon, 'form': form, 'new_product': new_product,
                    'owner': owner, 'products': products, 'form': form,
                    'list_url': list_url, 'detail_url': detail_url,
-                   'active_lang': request.LANG.lower()})
+                   'active_lang': active_lang, 'lazy_attr': getattr})
 
 
 def _fix_origin_link(link):

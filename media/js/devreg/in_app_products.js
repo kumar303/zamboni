@@ -138,8 +138,12 @@
     });
 
     var InAppProductComponent = flight.component(function () {
+        this.nameData = {};
+        this.editingLocale = null;
+
         this.defaultAttrs({
             startEditing: false,
+            localeSelector: '.in-app-product-locale',
             nameSelector: '.in-app-product-name',
             priceSelector: '.in-app-product-price',
             logoUrlSelector: '.in-app-product-logo-url',
@@ -169,11 +173,15 @@
             console.log('saving product', method.toUpperCase(), self.url(),
                         self.product);
 
-            // TODO: pass a real localized name when bug 1070120 is fixed.
-            console.warn('temporarily overriding localized name data');
-            var localizedName = {};
-            localizedName[this.$rootData.activeLang] = this.product.name;
-            this.product.name = localizedName;
+            // Make sure we save the current value.
+            this.nameData[this.editingLocale] = this.product.name;
+            // Now post a JSON string of all edited locales:
+            this.product.name = this.nameData;
+            console.log('saving name as', this.product.name);
+
+            // FIXME: set default locale from the UI.
+            console.warn('temporarily setting default locale to',
+                         this.$rootData.activeLang);
             this.product.default_locale = this.$rootData.activeLang;
 
             $.ajax({
@@ -208,6 +216,7 @@
             this.detailUrlFormat = decodeURIComponent(
                 this.$rootData.detailUrlFormat);
             this.name = this.select('nameSelector');
+            this.locale = this.select('localeSelector');
             this.price = this.select('priceSelector');
             this.guid = this.select('productIdSelector');
             this.logoUrl = this.select('logoUrlSelector');
@@ -265,6 +274,11 @@
                 name: 'name',
                 startEditing: this.attr.startEditing,
             });
+            InlineTextEditComponent.attachTo(this.locale, {
+                name: 'locale',
+                inputSelector: 'select',
+                startEditing: this.attr.startEditing,
+            });
             InlineTextComponent.attachTo(this.guid, {
                 name: 'guid',
                 dataSource: this,
@@ -283,6 +297,32 @@
                         return gettext('Disabled');
                     }
                 },
+            });
+
+            this.editingLocale = this.locale.find('select').val();
+            if (!this.editingLocale) {
+              throw new Error('could not set locale');
+            }
+
+            // TODO: load existing locales for product names when editing.
+
+            this.on(this.locale, 'change', function (e) {
+                console.log('data', this.nameData);
+                var nameInput = this.name.find('input');
+
+                // Save the old localization before moving to the next one.
+                var currentName = nameInput.val();
+                if (currentName || this.nameData[this.editingLocale]) {
+                    // It's important to mark empties as null so that
+                    // the translation is nullified in the DB. We only need to
+                    // do this if it was defined once before.
+                    this.nameData[this.editingLocale] = currentName || null;
+                }
+                console.log('finish editing old locale:', this.editingLocale);
+
+                this.editingLocale = e.target.value;
+                console.log('begin editing new locale:', this.editingLocale);
+                nameInput.val(this.nameData[this.editingLocale] || "");
             });
 
             this.on(this.logoUrl, 'click', function (e) {
